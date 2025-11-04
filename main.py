@@ -4,7 +4,8 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
 import crud
-from database import SessionLocal
+from database import SessionLocal, engine
+from models import Base
 from schemas import (
     CreateAuthorRequest,
     CreateBookRequest,
@@ -14,14 +15,19 @@ from schemas import (
 
 app = FastAPI()
 
+def create_db_tables():
+    Base.metadata.create_all(bind=engine)
+    
+create_db_tables()
+
 
 def get_db() -> Generator[Session, None, None]:
-    db = SessionLocal()
+    db = SessionLocal()    
     try:
         yield db
     finally:
         db.close()
-
+        
 
 @app.get("/", tags=["Root"])
 def root():

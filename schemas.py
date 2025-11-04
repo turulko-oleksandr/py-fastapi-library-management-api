@@ -9,16 +9,14 @@ class CreateAuthorRequest(BaseModel):
 
 class GetAuthorResponse(CreateAuthorRequest):
     id: int
-    name: str
-    bio: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class GetAuthorsBooks(BaseModel):
-    class Meta:
-        orm_mode = True
+    class Config:
+        from_attributes = True
 
 
 class CreateBookRequest(BaseModel):
